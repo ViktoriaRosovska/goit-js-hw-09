@@ -1,8 +1,11 @@
 import flatpickr from "flatpickr";
-// import Notiflix from 'notiflix';
+import Notiflix from 'notiflix';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import 'flatpickr/dist/flatpickr.min.css';
 
+Notify.init({
+    position: 'center-top'
+});
 class Timer {
     constructor({ selector, targetDate }) {
         this.spanDays = document.querySelector(`${selector} [data-days]`);
