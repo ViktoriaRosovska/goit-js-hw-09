@@ -16,3 +16,62 @@ img {
   display: block;
   max-width: 100%;
 }
+.timer {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+.timer .field {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  width: 120px;
+  height: 200px;
+  background-color: #212121;
+  color: white;
+  font-size: 70px;
+  font-weight: bold;
+  border-radius: 20px;
+  outline-offset: -5px;
+  padding: 10px;
+  outline: 2px solid white;
+  box-shadow: 6px 5px 10px #5857574a;
+  }
+
+.timer .label {
+  font-size: 20px;
+}
+.timer .value {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+.flatpickr-day.selected {
+  background-color: #212121!important;
+  border: none!important;
+ 
+  
+}
+
+
+.flatpickr-time input.flatpickr-hour::selection,
+.flatpickr-time input.flatpickr-minute::selection  {
+  background-color: #212121 !important;
+  color: white!important;
+}
+
+.flatpickr-months .flatpickr-next-month:hover svg,
+.flatpickr-months .flatpickr-prev-month:hover svg {
+  fill: black!important;
+}
+
+
+.flatpickr-monthDropdown-month {
+  color: white;
+  background-color: #212121 !important;
+}
