@@ -1,5 +1,4 @@
 import flatpickr from "flatpickr";
-import Notiflix from 'notiflix';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -21,8 +20,7 @@ class Timer {
             const deltaTime = this.targetDate - currentTime;
             if (this.targetDate < currentTime) {
                 this.stop();
-                // alert('Time is over');
-               Notify.success('Time is over');
+                Notify.success('Time is over');
             }
             else
                 this.setControls(deltaTime);
@@ -82,12 +80,10 @@ function convertMs(ms) {
 
 function onTimerCreate() {
     if (timer) {
-        // alert("Timer already created");
         Notify.failure("Timer already created");
         return;
     }
     if (date < Date.now()) {
-        // alert("Please choose a date in the future");
         Notify.failure("Please choose a date in the future");
         return;
     }
