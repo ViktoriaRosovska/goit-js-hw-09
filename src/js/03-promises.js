@@ -8,7 +8,7 @@ refs.form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
   e.preventDefault();
-  const { delay, step, amount } = e.target
+  const { delay, step, amount } = e.target;
   const countPosition = parseInt(amount.value);
   let delayMs = parseInt(delay.value);
   let stepMs = parseInt(step.value);
