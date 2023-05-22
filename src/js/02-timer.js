@@ -34,10 +34,10 @@ class Timer {
         this.spanMinutes.textContent = minutes;
         this.spanSeconds.textContent = seconds;
     }
-}
+};
  
-startBtn = document.querySelector('button[data-start]');
-stopBtn = document.querySelector('button[data-stop]')
+const startBtn = document.querySelector('button[data-start]');
+const stopBtn = document.querySelector('button[data-stop]')
 
 let date = new Date();
 let timer = null;
