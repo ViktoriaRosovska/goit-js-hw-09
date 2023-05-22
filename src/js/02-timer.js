@@ -1,6 +1,5 @@
 import flatpickr from "flatpickr";
 import 'flatpickr/dist/flatpickr.min.css';
-import 'flatpickr/dist/themes/light.css';
 
 class Timer {
     constructor({ selector, targetDate }) {
@@ -81,7 +80,7 @@ function onTimerCreate() {
         return;
     }
     if (date < Date.now()) {
-        alert("Enter date in the future")
+        alert("Please choose a date in the future");
         return;
     }
     timer = new Timer({
