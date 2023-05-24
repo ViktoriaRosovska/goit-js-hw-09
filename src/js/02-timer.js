@@ -6,13 +6,14 @@ Notify.init({
     position: 'center-top'
 });
 class Timer {
-    constructor({ selector, targetDate }) {
+    constructor({ selector, targetDate, onFinished }) {
         this.spanDays = document.querySelector(`${selector} [data-days]`);
         this.spanHours = document.querySelector(`${selector} [data-hours]`);
         this.spanMinutes = document.querySelector(`${selector} [data-minutes]`);
         this.spanSeconds = document.querySelector(`${selector} [data-seconds]`);
         this.targetDate = targetDate;
         this.timerId = null;
+        this.onFinished = onFinished;
     }
     start() {
         this.timerId = setInterval(() => {
@@ -21,6 +22,10 @@ class Timer {
             if (this.targetDate < currentTime) {
                 this.stop();
                 Notify.success('Time is over');
+
+                if (this.onFinished) {
+                    this.onFinished(this);
+                }
             }
             else
                 this.setControls(deltaTime);
@@ -30,23 +35,43 @@ class Timer {
         clearInterval(this.timerId);
         this.setControls(0);
     }
-    
+
     setControls(timeMs) {
-        const { days, hours, minutes, seconds } = convertMs(timeMs);
+        const { days, hours, minutes, seconds } = this.convertMs(timeMs);
         this.spanDays.textContent = days;
         this.spanHours.textContent = hours;
         this.spanMinutes.textContent = minutes;
         this.spanSeconds.textContent = seconds;
     }
+    
+    convertMs(ms) {
+
+        const second = 1000;
+        const minute = second * 60;
+        const hour = minute * 60;
+        const day = hour * 24;
+
+        const days    = this.addLeadingZero(Math.floor(ms / day));
+        const hours   = this.addLeadingZero(Math.floor((ms % day) / hour));
+        const minutes = this.addLeadingZero(Math.floor(((ms % day) % hour) / minute));
+        const seconds = this.addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+
+        return { days, hours, minutes, seconds };
+    }
+
+    addLeadingZero(value) {
+        return String(value).padStart(2, '0');
+    }
 };
  
 const startBtn = document.querySelector('button[data-start]');
 const stopBtn = document.querySelector('button[data-stop]')
+const input = document.querySelector('#datetime-picker');
+
+startBtn.disabled = true;
 
 let date = new Date();
 let timer = null;
-
-const input = document.querySelector('#datetime-picker');
 
 const options = {
     enableTime: true,
@@ -55,7 +80,15 @@ const options = {
     defaultDate: date,
     minuteIncrement: 1,
     onClose: (selectedDates) => {
-        date = selectedDates[0];
+        if (selectedDates[0] <= new Date()) {
+            startBtn.disabled = true;
+            Notify.failure("Please choose a date in the future");
+          
+        } else {
+            date = selectedDates[0];
+            startBtn.disabled = false;
+        }
+        
     },
 };
 let timePicker = flatpickr(input, options);
@@ -63,51 +96,34 @@ let timePicker = flatpickr(input, options);
 startBtn.addEventListener('click', onTimerCreate);
 stopBtn.addEventListener('click', onTimerDestroy);
 
-function convertMs(ms) {
-
-  const second = 1000;
-  const minute = second * 60;
-  const hour = minute * 60;
-  const day = hour * 24;
-
-  const days = addLeadingZero(Math.floor(ms / day));
-  const hours = addLeadingZero(Math.floor((ms % day) / hour));
-  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
-  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
-
-  return { days, hours, minutes, seconds };
-}
-
 function onTimerCreate() {
     if (timer) {
         Notify.failure("Timer already created");
         return;
     }
-    if (date < Date.now()) {
-        Notify.failure("Please choose a date in the future");
-        return;
-    }
-    timer = new Timer({
-        selector: ".timer",
-        targetDate: date
-    });
+    
+    if (date > new Date()){
+        timer = new Timer({
+            selector: ".timer",
+            targetDate: date,
+            onFinished: onTimerDestroy
+        });
+    stopBtn.disabled = false;
+    startBtn.disabled = true;
     timer.start();
-    disabled(true);
+    input.disabled = true; 
+    } else {
+        Notify.failure("Please choose a date in the future");
+    }
 }
 
 function onTimerDestroy() {
     timer?.stop();
     timer = null;
+    date = new Date();
 
-    disabled(false);
-    timePicker.setDate(new Date());
-}
-
-function addLeadingZero(value) {
-    return String(value).padStart(2, '0');
-}
-
-function disabled(value) {
-    startBtn.disabled = value;
-    input.disabled = value;
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    input.disabled = false;
+    timePicker.setDate(date);
 }

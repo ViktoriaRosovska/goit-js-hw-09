@@ -16,6 +16,16 @@ img {
   display: block;
   max-width: 100%;
 }
+
+
+[data-start], [data-stop] {
+ background-color: rgb(76, 217, 41);
+ border-radius: 5px;
+ border-color: transparent;
+}
+[data-start]:disabled, [data-stop]:disabled {
+  background-color: rgba(76, 217, 41, 0.7);
+}
 .timer {
   display: flex;
   gap: 30px;
@@ -54,10 +64,7 @@ img {
 .flatpickr-day.selected {
   background-color: #212121!important;
   border: none!important;
- 
-  
 }
-
 
 .flatpickr-time input.flatpickr-hour::selection,
 .flatpickr-time input.flatpickr-minute::selection  {
@@ -74,4 +81,37 @@ img {
 .flatpickr-monthDropdown-month {
   color: white;
   background-color: #212121 !important;
+}
+
+.form__container {
+  width: 50vw;
+  height: auto;
+  background-color: #E35869;
+  border-radius: 10px;
+  padding: 50px;
+   min-width: 336px;
+}
+.form {
+  background-color: #fafafa;
+  padding: 40px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 2px 25px rgba(0, 0, 0, 0.2);
+}
+.form button {
+  margin-top: 30px;
+  min-width: 50%;
+  height: 30px;
+  border-radius: 7px;
+  border-color: transparent;
+  background-color: #2D3B55;
+  color: #fafafa;
+}
+
+label input {
+  display: block;
 }
